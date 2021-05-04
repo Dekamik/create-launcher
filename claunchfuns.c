@@ -28,8 +28,7 @@ int write_file(char *path, struct arguments arguments)
     }
     else if ((out_stream = fopen(path, "w")) == NULL)
     {
-        printf("Cannot access file at %s, do you have root permissions?", path);
-        exit(EXIT_FAILURE);
+        return 0;
     }
 
     fprintf(out_stream, "[Desktop entry]");
@@ -51,4 +50,6 @@ int write_file(char *path, struct arguments arguments)
     fclose(out_stream);
 
     system(strcat("chmod +x ", path));
+
+    return 1;
 }

@@ -7,6 +7,9 @@
 
 #include <argp.h>
 
+extern char const *argp_program_version;
+extern char const *argp_program_bug_address;
+
 struct arguments
 {
     char *args[2];      // NAME and COMMAND
@@ -19,14 +22,12 @@ struct arguments
     int is_interactive; // Argument for no args
 };
 
-static struct argp_option options[] =
-{
-        {"icon", 'i', "ICON", 0, "Path to launcher icon."},
-        {"output", 'o', "OUTFILE", 0, "Output to OUTFILE instead of to /usr/share/applications/<launcher-name>.desktop"},
-        {"terminal", 't', 0, 0, "Run launcher command in terminal."},
-        {"categories", 'c', "CAT1;CAT2", 0, "List of categories as a semicolon-separated string."},
-        {"description", 'd', "DESC", 0, "Launcher description/comment."},
-        {"stdout", 's', 0, 0, "Redirect to stdout."}
-};
+static struct argp_option options[6];
+
+error_t parse_opt (int key, char *arg, struct argp_state *state);
+
+extern char const args_doc[];
+
+extern char const doc[];
 
 #endif //CREATE_LAUNCHER_ARGS_H

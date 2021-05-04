@@ -4,57 +4,10 @@
 #include "args.h"
 #include "claunchfuns.h"
 
-const char *argp_program_version = "create-launcher 1.0";
-const char *argp_program_bug_address = "<dennis@vonbargen.se>";
-
-static error_t parse_opt (int key, char *arg, struct argp_state *state)
-{
-    struct arguments *arguments = state->input;
-
-    switch (key)
-    {
-        case 'i':
-            arguments->icon = arg;
-            break;
-        case 'o':
-            arguments->outfile = arg;
-            break;
-        case 't':
-            arguments->is_terminal = 1;
-            break;
-        case 'c':
-            arguments->categories = arg;
-            break;
-        case 'd':
-            arguments->description = arg;
-            break;
-        case 's':
-            arguments->is_stdout = 1;
-            break;
-        case ARGP_KEY_ARG:
-            if (state->arg_num >= 2)
-                argp_usage(state);
-            arguments->args[state->arg_num] = arg;
-            break;
-        case ARGP_KEY_END:
-            if (state->arg_num < 2)
-                argp_usage(state);
-            break;
-        default:
-            return ARGP_ERR_UNKNOWN;
-    }
-    return 0;
-}
-
-static char args_doc[] = "NAME COMMAND";
-
-static char doc[] = "create-launcher -- A program for creating launchers on gnome on Ubuntu.";
-
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
 int main(int argc, char **argv) {
     struct arguments arguments;
-    FILE *out_stream;
     char *file_path;
 
     arguments.icon = NULL;
@@ -66,25 +19,39 @@ int main(int argc, char **argv) {
 
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
+    if (arguments.is_interactive) {
+        // TODO: add interactive argument input
+    }
+
     if (arguments.outfile)
-        file_path = arguments.outfile;
+    {
+        file_path = malloc(strlen(arguments.outfile));
+        strcpy(file_path, arguments.outfile);
+    }
     else
     {
+        char *dir = "/usr/share/applications/";
         char *file_name = replace_char(to_lower(arguments.args[0]), ' ', '-');
-        file_path = strcat("/usr/share/applications/", strcat(file_name, ".desktop"));
+        char *ext = ".desktop";
+        file_path = malloc(strlen(dir) + strlen(file_name) + strlen(ext));
+        strcpy(file_path, dir);
+        strcat(file_path, file_name);
+        strcat(file_path, ext);
     }
 
     if (!has_file_permission(file_path))
     {
         printf("Cannot access file at %s, do you have root permissions?", file_path);
+        free(file_path);
         exit(EXIT_FAILURE);
     }
 
-    if (arguments.is_interactive) {
-        // TODO: add interactive argument input
-    }
+    if (write_file(file_path, arguments))
+        printf("Launcher created.");
+    else
+        printf("Error when creating launcher.");
 
-    write_file(file_path, arguments);
+    free(file_path);
 
     return EXIT_SUCCESS;
 }
