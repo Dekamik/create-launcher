@@ -22,7 +22,7 @@ static struct argp_option options[] =
         {"output", 'o', "OUTFILE", 0, "Output to OUTFILE instead of to /usr/share/applications/<launcher-name>.desktop"},
         {"terminal", 't', 0, 0, "Run launcher command in terminal."},
         {"categories", 'c', "CAT1;CAT2", 0, "List of categories as a semicolon-separated string."},
-        {"description", 'd', "DESCRIPTION", 0, "Launcher description."},
+        {"description", 'd', "DESC", 0, "Launcher description/comment."},
         {"stdout", 's', 0, 0, "Redirect to stdout."}
 };
 

@@ -3,7 +3,7 @@
 #include "strutils.h"
 #include "args.h"
 
-const char *argp_program_version = "argex 1.0";
+const char *argp_program_version = "create-launcher 1.0";
 const char *argp_program_bug_address = "<dennis@vonbargen.se>";
 
 static error_t parse_opt (int key, char *arg, struct argp_state *state)
