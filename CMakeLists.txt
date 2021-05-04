@@ -3,4 +3,4 @@ project(create_launcher C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(create-launcher main.c strutils.c strutils.h args.h)
+add_executable(create-launcher main.c strutils.c strutils.h args.h claunchfuns.c claunchfuns.h)

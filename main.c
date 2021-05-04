@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "strutils.h"
 #include "args.h"
+#include "claunchfuns.h"
 
 const char *argp_program_version = "create-launcher 1.0";
 const char *argp_program_bug_address = "<dennis@vonbargen.se>";
@@ -73,35 +74,17 @@ int main(int argc, char **argv) {
         file_path = strcat("/usr/share/applications/", strcat(file_name, ".desktop"));
     }
 
-    if (arguments.is_stdout)
-    {
-        out_stream = stdout;
-    }
-    else if ((out_stream = fopen(file_path, "w")) == NULL)
+    if (!has_file_permission(file_path))
     {
         printf("Cannot access file at %s, do you have root permissions?", file_path);
         exit(EXIT_FAILURE);
     }
 
-    fprintf(out_stream, "[Desktop entry]");
-    fprintf(out_stream, "Name=%s", arguments.args[0]);
-    if (arguments.description)
-        fprintf(out_stream, "Comment=%s", arguments.description);
-    else
-        fprintf(out_stream, "Comment=%s", arguments.args[0]);
-    fprintf(out_stream, "Exec=%s", arguments.args[1]);
-    if (arguments.icon)
-        fprintf(out_stream, "Icon=%s", arguments.icon);
-    fprintf(out_stream, "Terminal=%s", arguments.is_terminal == 0 ? "false" : "true");
-    fprintf(out_stream, "Type=Application");
-    if (arguments.categories)
-        fprintf(out_stream, "Categories=%s", arguments.categories);
-    else
-        fprintf(out_stream, "Categories=Utility");
+    if (arguments.is_interactive) {
+        // TODO: add interactive argument input
+    }
 
-    fclose(out_stream);
-
-    system(strcat("chmod +x ", file_path));
+    write_file(file_path, arguments);
 
     return EXIT_SUCCESS;
 }

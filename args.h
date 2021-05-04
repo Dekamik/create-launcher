@@ -5,6 +5,8 @@
 #ifndef CREATE_LAUNCHER_ARGS_H
 #define CREATE_LAUNCHER_ARGS_H
 
+#include <argp.h>
+
 struct arguments
 {
     char *args[2];      // NAME and COMMAND
@@ -14,6 +16,7 @@ struct arguments
     char *categories;   // Argument for -c
     char *description;  // Argument for -d
     int is_stdout;      // Argument for --stdout
+    int is_interactive; // Argument for no args
 };
 
 static struct argp_option options[] =
