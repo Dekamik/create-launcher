@@ -8,8 +8,8 @@
 #include <string.h>
 #include <ctype.h>
 
-char* replace_char(char *str, char find, char replace);
-char* to_lower(char *str);
+char *replace_char(char *str, char find, char replace);
+char *to_lower(char *str);
 int count_char(char *str, char find);
 char *split(char *buffer, char *str, char delimiter);
 
