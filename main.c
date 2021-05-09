@@ -1,8 +1,10 @@
 #include <argp.h>
 #include <stdlib.h>
-#include "strutils.h"
-#include "args.h"
-#include "claunchfuns.h"
+
+#include "args/args.h"
+#include "args/argsint.h"
+#include "utils/strutils.h"
+#include "utils/fileutils.h"
 
 static struct argp argp = {options, parse_opt, args_doc, doc};
 
@@ -20,7 +22,7 @@ int main(int argc, char **argv) {
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
     if (arguments.is_interactive) {
-        // TODO: add interactive argument input
+        get_arguments_interactively(&arguments);
     }
 
     if (arguments.outfile)
